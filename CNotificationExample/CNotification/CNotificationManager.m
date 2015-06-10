@@ -28,6 +28,8 @@
         self.delaySeconds = 1.5f;
         [self.backgroundView addSubview:self.titleLabel];
         
+        UITapGestureRecognizer *dismissTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissNotification)];
+        [self.backgroundView addGestureRecognizer:dismissTap];
     }
     return self;
 }
@@ -57,6 +59,7 @@
 }
 
 + (void)showMessage:(NSString *)message{
+    [CNotificationManager shareManager].completeBlock = nil;
     if ([[CNotificationManager shareManager] isShowing]) {
         [[CNotificationManager shareManager] reDisplayTitleLabel:message];
     }else{
@@ -65,6 +68,7 @@
 }
 
 + (void)showMessage:(NSString *)message withOptions:(NSDictionary *)options{
+    [CNotificationManager shareManager].completeBlock = nil;
     [CNotificationManager setDefaultOptions:options];
     [CNotificationManager showMessage:message];
 }
@@ -75,6 +79,7 @@
 }
 
 
+#pragma mark - Public Methods
 /**
  *  重新设置titleLabel backgroundView 背景等
  *
@@ -86,6 +91,7 @@
     self.titleLabel.font = self.textFont;
     self.titleLabel.text = message;
 }
+
 
 /**
  *  显示一条消息通知
@@ -104,6 +110,8 @@
         [self performSelector:@selector(dismissNotification) withObject:nil afterDelay:self.delaySeconds];
     }];
 }
+
+#pragma mark - Private Methods
 
 /**
  *  当消息通知已经显示时  重新显示titleLabel
