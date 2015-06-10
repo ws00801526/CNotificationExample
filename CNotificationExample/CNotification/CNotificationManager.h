@@ -26,7 +26,7 @@ typedef void(^CNCompleteBlock)();
 @property (nonatomic,copy) CNCompleteBlock completeBlock;
 
 + (instancetype)shareManager;
-+ (void)setDefaultOptions:(NSDictionary *)options;
++ (void)setOptions:(NSDictionary *)options;
 
 
 + (void)showMessage:(NSString *)message;

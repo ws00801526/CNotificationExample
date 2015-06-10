@@ -43,7 +43,10 @@
     return shareInstance;
 }
 
-+ (void)setDefaultOptions:(NSDictionary *)options{
++ (void)setOptions:(NSDictionary *)options{
+    if (!options) {
+        return;
+    }
     if (options[CN_BACKGROUND_COLOR_KEY]) {
         [CNotificationManager shareManager].backgroundColor = options[CN_BACKGROUND_COLOR_KEY];
     }
@@ -59,23 +62,24 @@
 }
 
 + (void)showMessage:(NSString *)message{
-    [CNotificationManager shareManager].completeBlock = nil;
+    
+        [CNotificationManager showMessage:message withOptions:nil completeBlock:nil];
+}
+
++ (void)showMessage:(NSString *)message withOptions:(NSDictionary *)options{
+    
+    [CNotificationManager showMessage:message withOptions:options completeBlock:nil];
+    
+}
+
++ (void)showMessage:(NSString *)message withOptions:(NSDictionary *)options completeBlock:(void(^)())completeBlock{
+    [CNotificationManager shareManager].completeBlock = completeBlock;
+    [CNotificationManager setOptions:options];
     if ([[CNotificationManager shareManager] isShowing]) {
         [[CNotificationManager shareManager] reDisplayTitleLabel:message];
     }else{
         [[CNotificationManager shareManager] showNotification:message];
     }
-}
-
-+ (void)showMessage:(NSString *)message withOptions:(NSDictionary *)options{
-    [CNotificationManager shareManager].completeBlock = nil;
-    [CNotificationManager setDefaultOptions:options];
-    [CNotificationManager showMessage:message];
-}
-
-+ (void)showMessage:(NSString *)message withOptions:(NSDictionary *)options completeBlock:(void(^)())completeBlock{
-    [CNotificationManager shareManager].completeBlock = completeBlock;
-    [CNotificationManager showMessage:message];
 }
 
 
